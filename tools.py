@@ -2,27 +2,46 @@ from langchain.tools import tool
 from tavily import TavilyClient
 from dotenv import load_dotenv
 
+from Retrieval import retrieve
+
 import os
 
 load_dotenv()
+
+# ---------------------------------------
+# Tavily Client
+# ---------------------------------------
 
 client = TavilyClient(
     api_key=os.getenv("TAVILY_API_KEY")
 )
 
-
+# ---------------------------------------
+# PDF Retrieval Tool
+# ---------------------------------------
 
 @tool
 def retrieve_pdf(query: str):
     """
-    Search uploaded PDF documents.
+    Retrieve relevant information from the ingested PDF collection.
     """
 
-    return "PDF retrieval not implemented yet."
+    try:
+
+        return retrieve(query)
+
+    except Exception as e:
+
+        return f"Retrieval Error: {e}"
+
+# ---------------------------------------
+# Calculator Tool
+# ---------------------------------------
+
 @tool
 def calculator(expression: str):
     """
-    Perform arithmetic calculations.
+    Evaluate mathematical expressions.
     """
 
     try:
@@ -35,6 +54,9 @@ def calculator(expression: str):
 
         return f"Calculation Error: {e}"
 
+# ---------------------------------------
+# Web Search Tool
+# ---------------------------------------
 
 @tool
 def web_search(query: str):
